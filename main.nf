@@ -20,11 +20,11 @@ process EXIF_GPS{
 
 process PROCESS_IMAGE{
     input:
-        each img    
+        each img
     output:
-        stdout
+        val target    
     exec:
-        println "${img.order}.- $img.file"
+        target = file("$params.directory/$img.file").copyTo(file("$params.outputDir/$img.order-$img.file"))        
 }
 
 workflow{
@@ -49,5 +49,6 @@ workflow{
 
     images_sorted
         | PROCESS_IMAGE
+        | view
 
 }
